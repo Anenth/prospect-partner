@@ -6,10 +6,8 @@
   "author": "anenth",
   "type": "module",
   "keywords": [
-    "chrome-extension",
-    "react",
-    "vite",
-    "create-chrome-ext"
+    "chrome-extension", 
+    "linkedin"
   ],
   "engines": {
     "node": ">=20.13.1"
