@@ -1,4 +1,4 @@
-import { addNoteWithMessageAndVariableValues, getLinkedProfileName, triggerConnectModal } from "../service/LinkedinService";
+import { connectWithPerson} from "../service/LinkedinService";
 import MESSAGE_KEY from "./MESSAGE_KEY";
 
 console.info('contentScript is running')
@@ -6,12 +6,7 @@ console.info('contentScript is running')
 const browser = chrome;
 
 const messageHandler: Record<MESSAGE_KEY, (payload: any) => void> = {
-  [MESSAGE_KEY.CONNET_WITH_PERSON]: async (message) => {
-    const name = getLinkedProfileName();
-    const isModalOpen = await triggerConnectModal();
-    console.log(isModalOpen)
-    addNoteWithMessageAndVariableValues(message || '', {name});
-  }
+  [MESSAGE_KEY.CONNET_WITH_PERSON]: connectWithPerson
 }
 
 browser.runtime.onMessage.addListener((request: {

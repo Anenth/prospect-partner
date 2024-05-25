@@ -4,7 +4,7 @@ import { appVersion } from '../../Utils/EnvUtils';
 import { TemplateMessageType } from '../../service/TemplateMessageService';
 import MessageTemplates from '../message-templates/MessageTemplates';
 import MESSAGE_KEY from '../../contentScript/MESSAGE_KEY';
-import { setMessageToContentScript } from '../../service/MessagesUtils';
+import { setMessageToContentScript } from '../../Utils/MessagesUtils';
 
 
 export default function ConnectWithPerson(){
@@ -30,7 +30,7 @@ export default function ConnectWithPerson(){
     <div>
       <MessageTemplates onSelect={setSelectedNote}/>
       <Space direction="vertical" size='large' />
-      <Button onClick={handleOnclick}>Connect</Button>
+      <Button type="primary" size="large" onClick={handleOnclick}>Connect</Button>
     </div>
   )
 }

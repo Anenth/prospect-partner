@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import { TemplateMessageType } from '../../service/TemplateMessageService'
+import React, { useEffect, useState } from 'react'
+import { TemplateMessageType, updateMessages, getAllMessages } from '../../service/TemplateMessageService'
 import { getSmallUUID } from '../../Utils/MathUtils'
-import { getFormValues } from '../../Utils/FormUtils'
-import { Button, Form, Input, List } from 'antd';
+import { Button, Col, Form, Input, List, Row } from 'antd'
 
 type Props = {
   onSelect: (message: TemplateMessageType) => void
@@ -10,16 +9,26 @@ type Props = {
 
 export default function MessageTemplates(props: Props) {
   const { onSelect } = props
-  const [templates, setTemplates] = useState<Record<string, TemplateMessageType>>({})
+  const [templates, setTemplates] = useState<Array<TemplateMessageType>>([]);
+
+  useEffect(() => {
+    setTemplates(getAllMessages())
+  }, [])
+
+  useEffect(() => {
+    onSelect(templates?.[0])
+  }, [templates])
+
   const [showAddTemplate, setShowAddTemplate] = useState(false)
 
-
-  function handleAddTemplate(data: {message: string}) {
-      const id = getSmallUUID()
-      const order = Object.values(templates).length
-      const template: TemplateMessageType = { id, message: data.message, order }
-      setTemplates({ ...templates, [id]: template })
-      setShowAddTemplate(false)
+  function handleAddTemplate(data: { message: string }) {
+    const id = getSmallUUID()
+    const order = templates.length
+    const template: TemplateMessageType= { id: getSmallUUID(),  message: data.message, order }
+    const messages = [...templates, template]
+    setTemplates(messages)
+    updateMessages(messages);
+    setShowAddTemplate(false)
   }
 
   if (showAddTemplate) {
@@ -30,7 +39,9 @@ export default function MessageTemplates(props: Props) {
             <Input.TextArea />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">Add</Button>
+            <Button type="primary" htmlType="submit">
+              Add
+            </Button>
           </Form.Item>
         </Form>
       </div>
@@ -40,14 +51,20 @@ export default function MessageTemplates(props: Props) {
   return (
     <div>
       <List
-        dataSource={Object.values(templates)}
-        renderItem={note => (
+        dataSource={templates}
+        renderItem={(note) => (
           <List.Item>
             <Button onClick={() => onSelect(note)}>{note.message}</Button>
           </List.Item>
         )}
       />
-      <Button type="primary" onClick={() => setShowAddTemplate(true)}>Add New Template</Button>
+      <Row>
+      <Col span={2} offset={6}>
+      <Button type="default" size='small' onClick={() => setShowAddTemplate(true)}>
+        Add New Template
+      </Button>
+      </Col>
+      </Row>
     </div>
   )
 }

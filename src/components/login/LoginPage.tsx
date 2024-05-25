@@ -71,15 +71,17 @@ const LoginPage = () => {
         >
           <Input.Password />
         </Form.Item>
-        <Button type="primary" onClick={handleLoginWithGoogle}>
-          Login with Google
-        </Button>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Login
           </Button>
         </Form.Item>
       </Form>
+      <Form.Item>
+        <Button type="default" onClick={handleLoginWithGoogle}>
+          Login with Google
+        </Button>
+      </Form.Item>
       <Divider />
       <Link to={APP_ROUTES.SIGNUP}>Sign Up</Link>
     </div>

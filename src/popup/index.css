@@ -25,6 +25,14 @@
 }
 
 body {
-  min-width: 20rem;
   margin: 0;
+  border-radius: 10px;
+}
+
+.container {
+  width: 300px;
+  min-height: 400px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
 }
