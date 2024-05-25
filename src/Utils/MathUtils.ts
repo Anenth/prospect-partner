@@ -1,4 +1,4 @@
-import ShortUniqueId from 'short-unique-id;
+import ShortUniqueId from 'short-unique-id';
 
 export function getSmallUUID(): string {
   const uid = new ShortUniqueId({ length: 10 });
