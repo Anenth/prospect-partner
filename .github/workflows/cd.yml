@@ -12,10 +12,10 @@ env:
   GH_RELEASE_AUTHOR_LOGIN: ${{ github.event.release.author.login }}
   GH_ACTION_SENDER_LOGIN: ${{ github.event.sender.login }}
   GH_ACTION_SENDER_TYPE: ${{ github.event.sender.type }}
-  EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
-  CLIENT_ID: ${{ secrets.CLIENT_ID }}
-  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+  EXTENSION_ID: ${{ secrets.GOOGLE_EXTENSION_ID }}
+  CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
   
 
 jobs:
@@ -38,6 +38,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_APP_VERSION: ${{ env.GH_RELEASE_TAG }}
+          VITE_BD_PASS: ${{ secrets.BD_PASS }}
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -78,7 +81,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
-
+          
       - name: Publish to Chrome Web Store # https://github.com/fregante/ghatemplates/blob/main/webext/release.yml
         run: npx chrome-webstore-upload-cli@2 upload --auto-publish
         working-directory: artifact
@@ -88,3 +91,4 @@ jobs:
           clientSecret: ${{ env.CLIENT_SECRET }}
           refreshToken: ${{ env.REFRESH_TOKEN }}
           zipPath: ./build/extension.zip
+# https://github.com/fregante/chrome-webstore-upload-keys

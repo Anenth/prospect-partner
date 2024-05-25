@@ -1,8 +1,38 @@
+import { getCurrentOrganizationId } from './OrganizationService';
+import { supabase } from './SupabaseService'
 
-export type TemplateMessageType =  {id: string, message: string, order: number};
+export type TemplateMessageType = { id: string; message: string; order: number }
+const messageTemplateKey = 'messages'
+// Function to get message templates
+export async function getMessageTemplates(): Promise<TemplateMessageType[]> {
+  const orgId = await getCurrentOrganizationId()
 
-function getAllMessages(): TemplateMessageType[] {
-  const messages = localStorage.getItem('messages');
-  return messages ? JSON.parse(messages) : [];
+  const { data, error } = await supabase
+    .from<TemplateMessageType>(messageTemplateKey)
+    .select('*')
+    .eq('user_organization_id', orgId)
+
+  if (error) {
+    throw error
+  }
+
+  return data || []
 }
 
+// Function to save a message template
+export async function saveMessageTemplate(
+  template: TemplateMessageType,
+): Promise<TemplateMessageType> {
+  const orgId = await getCurrentOrganizationId()
+  const userId = await getCurrentUserId()
+
+  const { data, error } = await supabase
+    .from<TemplateMessageType>(messageTemplateKey)
+    .insert({ ...template, user_organization_id: orgId, created_by: userId })
+
+  if (error) {
+    throw error
+  }
+
+  return data![0]
+}
