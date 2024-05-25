@@ -1,0 +1,90 @@
+name: CD
+
+on:
+  create:
+  release:
+    types: [published]
+env:
+  GH_RELEASE_NAME: ${{ github.event.release.tag_name }}
+  GH_RELEASE_TAG: ${{ github.event.release.tag_name }}
+  GH_RELEASE_URL: ${{ github.event.release.url }}
+  GH_RELEASE_AUTHOR_TYPE: ${{github.event.release.author.type }}
+  GH_RELEASE_AUTHOR_LOGIN: ${{ github.event.release.author.login }}
+  GH_ACTION_SENDER_LOGIN: ${{ github.event.sender.login }}
+  GH_ACTION_SENDER_TYPE: ${{ github.event.sender.type }}
+  EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GH_RELEASE_TAG }}
+      - name: Read .nvmrc
+        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NVMRC }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ env.GH_RELEASE_URL }}
+          asset_path: ./build/extension.zip
+          asset_name: extension.zip
+          asset_content_type: application/zip
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+
+      - name: Publish to Chrome Web Store # https://github.com/fregante/ghatemplates/blob/main/webext/release.yml
+        run: npx chrome-webstore-upload-cli@2 upload --auto-publish
+        working-directory: artifact
+        env:
+          extensionId: ${{ env.EXTENSION_ID }}
+          clientId: ${{ env.CLIENT_ID }}
+          clientSecret: ${{ env.CLIENT_SECRET }}
+          refreshToken: ${{ env.REFRESH_TOKEN }}
+          zipPath: ./build/extension.zip
