@@ -18,7 +18,7 @@ export default defineManifest({
   },
   action: {
     default_popup: 'popup.html',
-    default_icon: 'img/logo-48.png',
+    default_icon: 'img/logo-64.png',
   },
   options_page: 'options.html',
   devtools_page: 'devtools.html',
