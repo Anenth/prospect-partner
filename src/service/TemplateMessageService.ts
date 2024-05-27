@@ -1,4 +1,4 @@
-import {} from 'idb';
+import {} from 'idb'
 // import { getCurrentOrganizationId } from './OrganizationService';
 // import { supabase } from './SupabaseService'
 
@@ -7,18 +7,17 @@ const STORE_NAME = 'messages'
 
 // Function to get all messages from local storage
 export function getAllMessages(): TemplateMessageType[] {
-  const messagesStr = localStorage.getItem(STORE_NAME);
+  const messagesStr = localStorage.getItem(STORE_NAME)
   if (messagesStr) {
-    return JSON.parse(messagesStr);
+    return JSON.parse(messagesStr)
   }
-  return [];
+  return []
 }
 
 // Function to update a message in local storage
 export function updateMessages(messages: Array<TemplateMessageType>): void {
-  localStorage.setItem(STORE_NAME, JSON.stringify(messages));
+  localStorage.setItem(STORE_NAME, JSON.stringify(messages))
 }
-
 
 // const messageTemplateKey = 'messages'
 // // Function to get message templates

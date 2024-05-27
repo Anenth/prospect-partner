@@ -2,4 +2,4 @@ enum MESSAGE_KEY {
   CONNET_WITH_PERSON = 'CONNET_WITH_PERSON',
 }
 
-export default MESSAGE_KEY;
+export default MESSAGE_KEY

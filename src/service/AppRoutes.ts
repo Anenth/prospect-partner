@@ -5,4 +5,4 @@ const APP_ROUTES = {
   CONNECT: '/connect',
 }
 
-export default APP_ROUTES;
+export default APP_ROUTES

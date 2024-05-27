@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TemplateMessageType, updateMessages, getAllMessages } from '../../service/TemplateMessageService'
+import {
+  TemplateMessageType,
+  updateMessages,
+  getAllMessages,
+} from '../../service/TemplateMessageService'
 import { getSmallUUID } from '../../Utils/MathUtils'
 import { Button, Col, Form, Input, List, Row } from 'antd'
 
@@ -9,7 +13,7 @@ type Props = {
 
 export default function MessageTemplates(props: Props) {
   const { onSelect } = props
-  const [templates, setTemplates] = useState<Array<TemplateMessageType>>([]);
+  const [templates, setTemplates] = useState<Array<TemplateMessageType>>([])
 
   useEffect(() => {
     setTemplates(getAllMessages())
@@ -24,10 +28,10 @@ export default function MessageTemplates(props: Props) {
   function handleAddTemplate(data: { message: string }) {
     const id = getSmallUUID()
     const order = templates.length
-    const template: TemplateMessageType= { id: getSmallUUID(),  message: data.message, order }
+    const template: TemplateMessageType = { id: getSmallUUID(), message: data.message, order }
     const messages = [...templates, template]
     setTemplates(messages)
-    updateMessages(messages);
+    updateMessages(messages)
     setShowAddTemplate(false)
   }
 
@@ -59,11 +63,11 @@ export default function MessageTemplates(props: Props) {
         )}
       />
       <Row>
-      <Col span={2} offset={6}>
-      <Button type="default" size='small' onClick={() => setShowAddTemplate(true)}>
-        Add New Template
-      </Button>
-      </Col>
+        <Col span={2} offset={6}>
+          <Button type="default" size="small" onClick={() => setShowAddTemplate(true)}>
+            Add New Template
+          </Button>
+        </Col>
       </Row>
     </div>
   )

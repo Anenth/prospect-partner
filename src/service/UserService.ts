@@ -1,23 +1,23 @@
-import { supabase } from './SupabaseService';
+import { supabase } from './SupabaseService'
 
-export type UserType = {id: string, email: string, password: string};
+export type UserType = { id: string; email: string; password: string }
 
 export async function getCurrentUserId(): Promise<UserType | null> {
-  const user = supabase.auth.getUser();
+  const user = supabase.auth.getUser()
 
   if (!user) {
-    return null;
+    return null
   }
 
-  return Object.values(user)[0].id;
+  return Object.values(user)[0].id
 }
 
 export async function getCurrentUser(): Promise<UserType | null> {
-  const user = supabase.auth.getUser();
+  const user = supabase.auth.getUser()
 
   if (!user) {
-    return null;
+    return null
   }
 
-  return Object.values(user)[0];
+  return Object.values(user)[0]
 }

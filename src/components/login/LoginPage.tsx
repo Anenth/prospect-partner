@@ -20,25 +20,25 @@ const LoginPage = () => {
 
       message.success('Logged in successfully!')
     } catch (error) {
-      message.error((error as {message: string}).message)
+      message.error((error as { message: string }).message)
     } finally {
       setLoading(false)
     }
   }
 
-
   const handleLoginWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google',
-    options: {
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
       },
-    },
-     })
+    })
 
     if (error) {
-      message.error((error as {message: string}).message)
+      message.error((error as { message: string }).message)
     }
   }
 

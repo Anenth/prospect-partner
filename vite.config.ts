@@ -25,15 +25,15 @@ export default defineConfig(({ mode }) => {
       },
     },
     resolve: {
-      alias: [
-        { find: /^~/, replacement: "" },
-      ],
+      alias: [{ find: /^~/, replacement: '' }],
     },
-    plugins: [crx({ manifest }), react(),
+    plugins: [
+      crx({ manifest }),
+      react(),
       vitePluginImp({
         libList: [
           {
-            libName: "antd",
+            libName: 'antd',
             style: (name) => `antd/es/${name}/style`,
           },
         ],

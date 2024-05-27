@@ -1,5 +1,5 @@
-import { Form, Input, Button, notification } from 'antd';
-import { supabase } from '../../service/SupabaseService';
+import { Form, Input, Button, notification } from 'antd'
+import { supabase } from '../../service/SupabaseService'
 
 const SignupPage = () => {
   const onFinish = async (values: any) => {
@@ -7,37 +7,43 @@ const SignupPage = () => {
       const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
-      });
+      })
 
       if (error) {
         // Handle signup error
-        notification.error({ message: 'Signup Error', description: error.message });
+        notification.error({ message: 'Signup Error', description: error.message })
       } else {
         // Signup successful, do something with the user object
-        console.log(data.user);
+        console.log(data.user)
       }
     } catch (error) {
-      notification.error({ message: 'Signup Error', description: (error as {message: string}).message });
+      notification.error({
+        message: 'Signup Error',
+        description: (error as { message: string }).message,
+      })
     }
-  };
+  }
 
   const onGoogleSignup = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google'
-      });
+        provider: 'google',
+      })
 
       if (error) {
         // Handle signup error
-        notification.error({ message: 'Signup Error', description: error.message });
+        notification.error({ message: 'Signup Error', description: error.message })
       } else {
         // Signup successful, do something with the user object
-        console.log(data);
+        console.log(data)
       }
     } catch (error) {
-      notification.error({ message: 'Signup Error', description: (error as {message: string}).message });
+      notification.error({
+        message: 'Signup Error',
+        description: (error as { message: string }).message,
+      })
     }
-  };
+  }
 
   return (
     <Form onFinish={onFinish}>
@@ -72,7 +78,7 @@ const SignupPage = () => {
         </Button>
       </Form.Item>
     </Form>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage
