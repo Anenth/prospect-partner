@@ -17,13 +17,13 @@ const SignupPage = () => {
         console.log(data.user);
       }
     } catch (error) {
-      notification.error({ message: 'Signup Error', description: error.message });
+      notification.error({ message: 'Signup Error', description: (error as {message: string}).message });
     }
   };
 
   const onGoogleSignup = async () => {
     try {
-      const { data, error } = await supabase.auth.signIn({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google'
       });
 
@@ -32,10 +32,10 @@ const SignupPage = () => {
         notification.error({ message: 'Signup Error', description: error.message });
       } else {
         // Signup successful, do something with the user object
-        console.log(data.user);
+        console.log(data);
       }
     } catch (error) {
-      notification.error({ message: 'Signup Error', description: error.message });
+      notification.error({ message: 'Signup Error', description: (error as {message: string}).message });
     }
   };
 

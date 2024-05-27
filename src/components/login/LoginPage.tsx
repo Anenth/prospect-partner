@@ -12,7 +12,7 @@ const LoginPage = () => {
     const { email, password } = values
 
     try {
-      const { error } = await supabase.auth.signIn({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
 
       if (error) {
         throw new Error(error.message)
@@ -20,36 +20,25 @@ const LoginPage = () => {
 
       message.success('Logged in successfully!')
     } catch (error) {
-      message.error(error.message)
+      message.error((error as {message: string}).message)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSignup = async (values: any) => {
-    setLoading(true)
-    const { email, password } = values
-
-    try {
-      const { error } = await supabase.auth.signUp({ email, password })
-
-      if (error) {
-        throw new Error(error.message)
-      }
-
-      message.success('Signed up successfully! Please check your email for verification.')
-    } catch (error) {
-      message.error(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleLoginWithGoogle = async () => {
-    const { error } = await supabase.auth.signIn({ provider: 'google' })
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google',
+    options: {
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+     })
 
     if (error) {
-      message.error(error.message)
+      message.error((error as {message: string}).message)
     }
   }
 

@@ -1,4 +1,5 @@
 import { supabase } from './SupabaseService';
+import { getCurrentUserId } from './UserService';
 
 export type OrganizationType = {id: string, name: string, logo_url: string};
 
@@ -21,7 +22,7 @@ export async function getCurrentOrganization(): Promise<OrganizationType> {
   const id = await getCurrentOrganizationId();
 
   const { data, error } = await supabase
-    .from<OrganizationType>('organizations')
+    .from('organizations')
     .select('*')
     .eq('id', id);
 
